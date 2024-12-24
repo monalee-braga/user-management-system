@@ -9,9 +9,11 @@ namespace UserManagementApi.Repository
 {
     public interface IUserRepository
     {
+        
         Task<List<User>> GetAllUsersAsync();
         Task<User> GetUserByNameAsync(string name);
+        Task<User> GetUserByEmailAsync(string email);
         Task CreateUserAsync(User user);
-        Task UpdateUserAsync(User user);
+        Task UpdateUserAsync(int id, User user);
     }
 }

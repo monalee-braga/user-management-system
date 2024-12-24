@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml.Linq;
 using UserManagementApi.Models;
 
 namespace UserManagementApi.Repository
@@ -17,9 +18,12 @@ namespace UserManagementApi.Repository
 
         public async Task<List<User>> GetAllUsersAsync() => _users;
 
-        public async Task<User> GetUserByNameAsync(string name)
+        public async Task<User> GetUserByNameAsync(string name) => _users.FirstOrDefault(x => x.Name == name);
+
+        public async Task<User> GetUserByEmailAsync(string email)
         {
-            return _users.FirstOrDefault(x => x.Name == name);   
+            // Verifica se o usuário existe no banco de dados usando o email
+            return _users.FirstOrDefault(x => x.Email == email);
         }
         public async Task CreateUserAsync(User user)
         {

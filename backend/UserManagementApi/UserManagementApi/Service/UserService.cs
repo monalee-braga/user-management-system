@@ -18,6 +18,23 @@ namespace UserManagementApi.Service
             _userRepository = userRepository;
         }
 
+        public async Task<User> ValidateUser(string email, string password)
+        {
+            User user = _userRepository.GetUserByEmailAsync(email).Result;
+
+            if (user == null || !VerifyPassword(password, user.Password)) // Aqui você pode verificar o hash da senha
+            {
+                return null;  // Usuário ou senha inválidos
+            }
+
+            return user;
+        }
+
+        private bool VerifyPassword(string inputPassword, string storedPasswordHash)
+        {
+            // Aqui você deve implementar a lógica de verificação de senha (geralmente usando hash)
+            return inputPassword == storedPasswordHash;
+        }
         public async Task<List<User>> GetAllUsersAsync()
         {
             return await _userRepository.GetAllUsersAsync();  // Chamada assíncrona
@@ -33,9 +50,9 @@ namespace UserManagementApi.Service
             await _userRepository.CreateUserAsync(user);
         }
 
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(int id, User user)
         {
-            await _userRepository.UpdateUserAsync(user);
+            await _userRepository.UpdateUserAsync(id, user);
         }
     }
 }
