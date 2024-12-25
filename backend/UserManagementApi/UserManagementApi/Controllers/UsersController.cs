@@ -10,7 +10,7 @@ using UserManagementApi.Service;
 
 namespace UserManagementApi.Controllers
 {
-
+    [Authorize]
     [RoutePrefix("api/users")]
     public class UsersController : ApiController
     {
@@ -23,6 +23,7 @@ namespace UserManagementApi.Controllers
 
         // GET: api/users
         [HttpGet]
+        [Route("")]
         public async Task<IHttpActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllUsersAsync();  // Chamada assíncrona
@@ -31,7 +32,7 @@ namespace UserManagementApi.Controllers
 
         // GET: api/users/{name}
         [HttpGet]
-        [Route("{name:string}")]
+        [Route("{name}")]
         public async Task<IHttpActionResult> GetUserByName(string name)
         {
             var user = await _userService.GetUserByNameAsync(name);
@@ -66,7 +67,7 @@ namespace UserManagementApi.Controllers
                 return BadRequest("User ID mismatch");
             }
 
-            await _userService.UpdateUserAsync(user);
+            await _userService.UpdateUserAsync(id, user);
             return Ok("Usuário atualizado");
         }
     }

@@ -12,13 +12,13 @@ namespace UserManagementApi.Repository
     {
         private static List<User> _users = new List<User>
         {
-            new User { Id = 1, Name = "Admin User", Email = "admin@example.com", Password = "hashedPassword", Permission = "admin", Phone = "123456789" },
+            new User { Id = 1, Name = "Admin User", Email = "admin@example.com", Password = "senha123", Permission = "admin", Phone = "123456789" },
             new User { Id = 2, Name = "Standard User", Email = "standard@example.com", Password = "hashedPassword", Permission = "standard", Phone = "987654321" }
         };
 
         public async Task<List<User>> GetAllUsersAsync() => _users;
 
-        public async Task<User> GetUserByNameAsync(string name) => _users.FirstOrDefault(x => x.Name == name);
+        public async Task<User> GetUserByNameAsync(string name) => _users.FirstOrDefault(x => x.Name.ToLower().Contains(name));
 
         public async Task<User> GetUserByEmailAsync(string email)
         {

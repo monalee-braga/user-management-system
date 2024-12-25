@@ -18,7 +18,7 @@ namespace UserManagementApi.Service
             _userRepository = userRepository;
         }
 
-        public async Task<User> ValidateUser(string email, string password)
+        public async Task<User> ValidateUserAsync(string email, string password)
         {
             User user = _userRepository.GetUserByEmailAsync(email).Result;
 

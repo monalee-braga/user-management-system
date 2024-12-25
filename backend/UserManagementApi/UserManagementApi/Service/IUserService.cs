@@ -9,10 +9,10 @@ namespace UserManagementApi.Service
 {
     public interface IUserService
     {
-        Task<User> ValidateUser(string email, string password);
+        Task<User> ValidateUserAsync(string email, string password);
         Task<List<User>> GetAllUsersAsync();
         Task<User> GetUserByNameAsync(string name);
         Task CreateUserAsync(User user);
-        Task UpdateUserAsync(User user);
+        Task UpdateUserAsync(int id, User user);
     }
 }

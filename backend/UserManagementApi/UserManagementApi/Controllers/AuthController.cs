@@ -24,16 +24,35 @@ namespace UserManagementApi.Controllers
         [Route("login")]
         public async Task<IHttpActionResult> Login([FromBody] Login loginRequest)
         {
+            // Verifica se os dados de login foram enviados
+            if (loginRequest == null || string.IsNullOrWhiteSpace(loginRequest.Email) || string.IsNullOrWhiteSpace(loginRequest.Password))
+            {
+                return BadRequest("Email and password are required.");
+            }
+
             // Validação do usuário
-            User user =_userService.ValidateUser(loginRequest.Email, loginRequest.Password).Result;
+            var user = await _userService.ValidateUserAsync(loginRequest.Email, loginRequest.Password);
             if (user == null)
             {
-                return Unauthorized();  // Retorna 401 se o usuário não for válido
+                return Unauthorized(); // Retorna 401 se o usuário não for válido
             }
 
             // Gerar o token JWT
             var token = new AuthService().GenerateJwtToken(user);
-            return Ok(new { token });
+
+            // Retorna o token junto com as informações do usuário
+            return Ok(new
+            {
+                token,
+                user = new
+                {
+                    user.Name,
+                    user.Email,
+                    user.Permission,
+                    user.Phone
+                }
+            });
         }
+
     }
 }
